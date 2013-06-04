@@ -225,12 +225,11 @@ class VideoHandlerHelper extends WikiaModel {
 	/**
 	 * get video detail
 	 * @param array $videoInfo [ array( 'title' => title, 'addedAt' => addedAt , 'addedBy' => addedBy ) ]
-	 * @param integer $thumbWidth
-	 * @param integer $thumbHeight
+	 * @param array $thumbParams [ array( 'width' => width, 'height' => height, ... ) ]
 	 * @param integer $postedInArticles
 	 * @return array $videoDetail
 	 */
-	public function getVideoDetail( $videoInfo, $thumbWidth, $thumbHeight, $postedInArticles ) {
+	public function getVideoDetail( $videoInfo, $thumbParams, $postedInArticles ) {
 		wfProfileIn( __METHOD__ );
 
 		$videoDetail = array();
@@ -239,8 +238,8 @@ class VideoHandlerHelper extends WikiaModel {
 			$file = $this->wf->FindFile( $title );
 			if ( $file instanceof File && $file->exists() && WikiaFileHelper::isFileTypeVideo( $file ) ) {
 				// get thumbnail
-				$thumb = $file->transform( array( 'width' => $thumbWidth, 'height' => $thumbHeight ) );
-				$thumbUrl = $thumb->getUrl();
+				$thumb = $file->transform( array( 'width' => $thumbParams['width'], 'height' => $thumbParams['height'] ) );
+				$thumbHtml = $thumb->toHtml( $thumbParams );
 
 				// get user
 				$user = User::newFromId( $videoInfo['addedBy'] );
@@ -255,9 +254,7 @@ class VideoHandlerHelper extends WikiaModel {
 				// video details
 				$videoDetail = array(
 					'title' => $title->getDBKey(),
-					'fileTitle' => $title->getText(),
-					'fileUrl' => $title->getLocalUrl(),
-					'thumbUrl' => $thumbUrl,
+					'thumbHtml' => $thumbHtml,
 					'userName' => $userName,
 					'userUrl' => $userUrl,
 					'truncatedList' => $truncatedList,

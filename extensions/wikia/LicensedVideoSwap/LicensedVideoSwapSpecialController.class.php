@@ -48,8 +48,6 @@ class LicensedVideoSwapSpecialController extends WikiaSpecialPageController {
 		// list of videos
 		$videoList = $this->getRegularVideoList( $selectedSort, $currentPage );
 		$this->videoList = $videoList;
-		$this->thumbWidth = self::THUMBNAIL_WIDTH;
-		$this->thumbHeight = self::THUMBNAIL_HEIGHT;
 
 		// pagination
 		$this->currentPage = $currentPage;
@@ -92,13 +90,15 @@ class LicensedVideoSwapSpecialController extends WikiaSpecialPageController {
 //			$readableTitle = preg_replace('/_/', ' ', $videoInfo['title']);
 //			$this->getVideoSuggestions($readableTitle);
 
-			$videoDetail = $helper->getVideoDetail( $videoInfo, self::THUMBNAIL_WIDTH, self::THUMBNAIL_HEIGHT, self::POSTED_IN_ARTICLES );
+			$thumbParams = array(
+				'width' => self::THUMBNAIL_WIDTH,
+				'height' => self::THUMBNAIL_HEIGHT,
+				'duration' => false, // set to false for main thumb, to true for carousel
+				'constHeight' => self::THUMBNAIL_HEIGHT,
+			);
+
+			$videoDetail = $helper->getVideoDetail( $videoInfo, $thumbParams, self::POSTED_IN_ARTICLES );
 			if ( !empty($videoDetail) ) {
-				$videoOverlay =  WikiaFileHelper::videoInfoOverlay( self::THUMBNAIL_WIDTH, $videoDetail['fileTitle'] );
-
-				$videoDetail['videoPlayButton'] = $playButton;
-				$videoDetail['videoOverlay'] = $videoOverlay;
-
 				$videos[] = $videoDetail;
 			}
 		}

@@ -60,10 +60,16 @@ class SpecialVideosHelper extends WikiaModel {
 		$mediaService = new MediaQueryService();
 		$videoList = $mediaService->getVideoList( $sort, $filter, self::VIDEOS_PER_PAGE, $page );
 
+		$thumbParams = array(
+			'width' => self::THUMBNAIL_WIDTH,
+			'height' => self::THUMBNAIL_HEIGHT,
+			'constHeight' => self::THUMBNAIL_HEIGHT,
+		);
+
 		$videos = array();
 		$helper = new VideoHandlerHelper();
 		foreach ( $videoList as $videoInfo ) {
-			$videoDetail = $helper->getVideoDetail( $videoInfo, self::THUMBNAIL_WIDTH, self::THUMBNAIL_HEIGHT, self::POSTED_IN_ARTICLES );
+			$videoDetail = $helper->getVideoDetail( $videoInfo, $thumbParams, self::POSTED_IN_ARTICLES );
 			if ( !empty($videoDetail) ) {
 				$videos[] = $videoDetail;
 			}

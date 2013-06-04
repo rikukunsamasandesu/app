@@ -117,12 +117,8 @@ class SpecialVideosSpecialController extends WikiaSpecialPageController {
 		foreach ( $videos as &$video ) {
 			$video['byUserMsg'] = $specialVideos->getByUserMsg( $video['userName'], $video['userUrl'] );
 			$video['postedInMsg'] = $specialVideos->getPostedInMsg( $video['truncatedList'], $video['isTruncated'] );
-			$video['videoOverlay'] = WikiaFileHelper::videoInfoOverlay( SpecialVideosHelper::THUMBNAIL_WIDTH, $video['fileTitle'] );
-			$video['videoPlayButton'] = WikiaFileHelper::videoPlayButtonOverlay( SpecialVideosHelper::THUMBNAIL_WIDTH, SpecialVideosHelper::THUMBNAIL_HEIGHT );
 		}
 
-		$this->thumbHeight = SpecialVideosHelper::THUMBNAIL_HEIGHT;
-		$this->thumbWidth = SpecialVideosHelper::THUMBNAIL_WIDTH;
 		$this->addVideo = $addVideo;
 		$this->pagination = $pagination;
 		$this->sortMsg = $sortingOptions[$sort]; // selected sorting option to display in drop down
