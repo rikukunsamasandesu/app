@@ -28,11 +28,7 @@
 				&nbsp; <!-- TODO: hack, replace this with message -->
 			</p>
 			<div class="video-container" itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
-				<a href="<?= $video['fileUrl'] ?>" class="image video">
-					<?= $video['videoPlayButton'] ?>
-					<img itemprop="thumbnail" alt="<?= $video['fileTitle'] ?>" src="<?= $video['thumbUrl'] ?>" width="<?= $thumbWidth ?>" height="<?= $thumbHeight ?>" data-video-name="<?= htmlspecialchars($video['fileTitle']) ?>" data-video-key="<?= htmlspecialchars(urlencode($video['title'])) ?>" class="Wikia-video-thumb thumbimage">
-					<?= $video['videoOverlay'] ?>
-				</a>
+				<?= $video['thumbHtml'] ?>
 				<meta itemprop="embedUrl" content="<?= $video['embedUrl'] ?>" />
 			</div>
 			<button class="secondary"><?= wfMessage('lvs-button-keep') ?></button>
@@ -40,11 +36,7 @@
 		<div class="grid-3 premium">
 			<p><?= wfMessage('lvs-best-match-label')->text() ?></p>
 			<div class="video-container" itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
-				<a href="<?= $video['fileUrl'] ?>" class="image video">
-					<?= $video['videoPlayButton'] ?>
-					<img itemprop="thumbnail" alt="<?= $video['fileTitle'] ?>" src="<?= $video['thumbUrl'] ?>" width="<?= $thumbWidth ?>" height="<?= $thumbHeight ?>" data-video-name="<?= htmlspecialchars($video['fileTitle']) ?>" data-video-key="<?= htmlspecialchars(urlencode($video['title'])) ?>" class="Wikia-video-thumb thumbimage">
-					<?= $video['videoOverlay'] ?>
-				</a>
+				<?= $video['thumbHtml'] ?>
 				<meta itemprop="embedUrl" content="<?= $video['embedUrl'] ?>" />
 			</div>
 			<a class="more" href="#"><?= wfMessage('lvs-more-suggestions')->numParams(5)->text() ?></a>

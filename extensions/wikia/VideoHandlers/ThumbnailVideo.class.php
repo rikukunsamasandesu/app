@@ -181,8 +181,9 @@ class ThumbnailVideo extends ThumbnailImage {
 			$attribs['class'] .= ' ' . $options['img-class'];
 		}
 
+		// TODO: figure out why addExtraBorder exists and see if we can get rid of it.
 		if ($this->file instanceof WikiaLocalFile || $this->file instanceof WikiaForeignDBFile) {
-			$extraBorder = $this->file->addExtraBorder( $this->width );
+			//$extraBorder = $this->file->addExtraBorder( $this->width );
 		}
 		if ( !empty( $extraBorder ) ) {
 			if ( !isset( $attribs['style'] ) ) $attribs['style'] = '';
@@ -234,6 +235,7 @@ class ThumbnailVideo extends ThumbnailImage {
 
 		if ( !isset( $linkAttribs['style'] ) ) $linkAttribs['style'] = '';
 
+		// TODO: "overlay" is not a valid css property
 		$linkAttribs['style'] .= 'overlay:hidden;';
 
 		if ( $this->height <= $options['constHeight'] ) {
