@@ -35,11 +35,7 @@ foreach ($videoList as $video):
 		<p><?= wfMessage('lvs-best-match-label')->plain() ?></p>
 		<? if ( !empty($best) ): ?>
 			<div class="video-wrapper">
-				<a href="<?= $best['fileUrl'] ?>" class="image video no-lightbox">
-					<?= $best['videoPlayButton'] ?>
-					<img alt="<?= $best['fileTitle'] ?>" src="<?= $best['thumbUrl'] ?>" width="<?= $thumbWidth ?>" height="<?= $thumbHeight ?>" data-video-name="<?= htmlspecialchars($best['fileTitle']) ?>" data-video-key="<?= htmlspecialchars(urlencode($best['title'])) ?>" class="Wikia-video-thumb thumbimage">
-					<?= $best['videoOverlay'] ?>
-				</a>
+				<?= $app->renderView( 'LicensedVideoSwapSpecialController', 'largeThumb', array( 'video' => $best, 'thumbWidth' => $thumbWidth, 'thumbHeight' => $thumbHeight ) ) ?>
 			</div>
 			<? if ( $numMoreSuggestions > 0 ): ?>
 				<a class="more-link" href="#"><?= wfMessage('lvs-more-suggestions')->numParams($numMoreSuggestions)->text() ?></a>
@@ -62,6 +58,9 @@ foreach ($videoList as $video):
 							<img alt="<?= $suggest['fileTitle'] ?>" src="<?= $suggest['thumbUrl'] ?>" data-video-name="<?= htmlspecialchars($suggest['title']) ?>" data-video-key="<?= htmlspecialchars(urlencode($suggest['title'])) ?>" class="Wikia-video-thumb thumbimage">
 						</a>
 						<p><?=$suggest['fileTitle'] ?></p>
+						<div class="large-thumb">
+							<?= $app->renderView( 'LicensedVideoSwapSpecialController', 'largeThumb', array( 'video' => $suggest, 'thumbWidth' => $thumbWidth,  'thumbHeight' => $thumbHeight ) ) ?>
+						</div>
 					</li>
 				<? endforeach; ?>
 			</ul>

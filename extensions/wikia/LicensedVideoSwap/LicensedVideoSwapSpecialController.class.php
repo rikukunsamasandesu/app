@@ -444,6 +444,12 @@ class LicensedVideoSwapSpecialController extends WikiaSpecialPageController {
 		$this->thumbHeight = LicensedVideoSwapHelper::THUMBNAIL_HEIGHT;
 	}
 
+	public function largeThumb() {
+		$this->video = $this->getVal( 'video' );
+		$this->thumbWidth = $this->getVal( 'thumbWidth' );
+		$this->thumbHeight = $this->getVal( 'thumbHeight' );
+	}
+
 	public function contentHeaderSort() {
 		$this->response->setTemplateEngine(WikiaResponse::TEMPLATE_ENGINE_MUSTACHE);
 

@@ -193,6 +193,9 @@ $color-callout-text: $color-text-dark;
 				width:$thumb-img-width;
 			}
 		}
+		.large-thumb {
+			display: none;
+		}
 	}
 	.swap-button:before {
 		@include sprite-LicensedVideoSwap($arrow-button-color + '_small_arrow');
