@@ -1,5 +1,5 @@
 
-define( 'lvs.undo', ['wikia.querystring', 'lvs.commonajax', 'wikia.window', 'lvs.videocontrols', 'wikia.nirvana', 'jquery'], function( QueryString, commonAjax, window, videoControls, nirvana, $ ) {
+define( 'lvs.undo', [ 'wikia.querystring', 'lvs.commonajax', 'wikia.window', 'lvs.videocontrols', 'wikia.nirvana', 'jquery', 'lvs.tracker' ], function( QueryString, commonAjax, window, videoControls, nirvana, $, tracker ) {
 
 	var $container,
 		videoTitle,
@@ -10,6 +10,7 @@ define( 'lvs.undo', ['wikia.querystring', 'lvs.commonajax', 'wikia.window', 'lvs
 		sort,
 		page,
 		wasSwap;
+
 
 	function doRequest() {
 		commonAjax.startLoadingGraphic();
@@ -24,7 +25,8 @@ define( 'lvs.undo', ['wikia.querystring', 'lvs.commonajax', 'wikia.window', 'lvs
 				page: page
 			},
 			callback: function( data ) {
-				commonAjax.success( $container, data);
+				// send info to common success method: response data and tracking label
+				commonAjax.success( data, tracker.labels.UNDO );
 			},
 			onErrorCallback: function() {
 				commonAjax.failure();
@@ -38,7 +40,6 @@ define( 'lvs.undo', ['wikia.querystring', 'lvs.commonajax', 'wikia.window', 'lvs
 		$( 'body' ).on( 'click', '.global-notification .undo', function( e ) {
 			e.preventDefault();
 
-			window.GlobalNotification.hide();
 			videoControls.reset();
 
 			var $this = $( this );
@@ -63,8 +64,19 @@ define( 'lvs.undo', ['wikia.querystring', 'lvs.commonajax', 'wikia.window', 'lvs
 				content: msg,
 				onOk: function() {
 					doRequest();
+
+					// Track click on okay button
+					tracker.track({
+						action: tracker.actions.CONFIRM,
+						label: tracker.labels.UNDO
+					});
 				},
 				width: 700
+			});
+
+			tracker.track({
+				action: tracker.actions.CLICK,
+				label: tracker.labels.UNDO
 			});
 		});
 	}
