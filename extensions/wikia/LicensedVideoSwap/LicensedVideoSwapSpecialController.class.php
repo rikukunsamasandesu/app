@@ -445,6 +445,9 @@ class LicensedVideoSwapSpecialController extends WikiaSpecialPageController {
 	}
 
 	public function largeThumb() {
+		// set this as a mustache template
+		$this->response->setTemplateEngine(WikiaResponse::TEMPLATE_ENGINE_MUSTACHE);
+
 		$this->video = $this->getVal( 'video' );
 		$this->thumbWidth = $this->getVal( 'thumbWidth' );
 		$this->thumbHeight = $this->getVal( 'thumbHeight' );

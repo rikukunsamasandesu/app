@@ -1,0 +1,6 @@
+{{ video }}
+<a href="{{ fileUrl }}" class="image video no-lightbox">
+	<?= $video['videoPlayButton'] ?>
+	<img alt="{{ fileTitle'] ?>" src="{{ thumbUrl }}" width="{{ thumbWidth }}" height="{{ thumbHeight ?>" data-video-name="<?= htmlspecialchars($video['fileTitle']) ?>" data-video-key="<?= htmlspecialchars(urlencode($video['title'])) ?>" class="Wikia-video-thumb thumbimage">
+	<?= $video['videoOverlay'] ?>
+</a>
