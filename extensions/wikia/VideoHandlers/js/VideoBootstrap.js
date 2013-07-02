@@ -4,16 +4,17 @@
  * This file doesn't require jQuery
  */
 
-define( 'wikia.videoBootstrap', ['wikia.loader', 'wikia.nirvana', 'wikia.log'], function videoBootstrap( loader, nirvana, log ) {
+define( 'wikia.videoBootstrap', [ 'wikia.loader', 'wikia.nirvana', 'wikia.log', 'wikia.tracker' ], function videoBootstrap( loader, nirvana, log, tracker ) {
 	var trackingTimeout = 0;
 
+
 	/**
-	 *  vb stands for "video bootstrap"
 	 *  @param {Element} element DOM element that is the wrapper for the video code
 	 *  @param {Object} json Key/value pair of data sent from a VideoHandler that provides info for video bootstrap
 	 *  @param {String} clickSource For analytics; it's the location on the site where the video was initiated.  Example: lightbox
 	 */
-	function vb ( element, json, clickSource ) {
+	function VideoBootstrap ( element, json, clickSource ) {
+
 		var self = this,
 			init = json.init,
 			html = json.html,
@@ -55,7 +56,7 @@ define( 'wikia.videoBootstrap', ['wikia.loader', 'wikia.nirvana', 'wikia.log'], 
 			for ( i = 0; i < scripts.length; i++ ) {
 				args.push({
 					type: loader.JS,
-					resources: scripts[i]
+					resources: scripts[ i ]
 				});
 			}
 
@@ -75,7 +76,7 @@ define( 'wikia.videoBootstrap', ['wikia.loader', 'wikia.nirvana', 'wikia.log'], 
 		}
 	}
 
-	vb.prototype = {
+	VideoBootstrap.prototype = {
 		/**
 		 * This is a full reload of the video player. Use this when you
 		 * need to reset the player with altered settings (such as autoplay).
@@ -101,12 +102,12 @@ define( 'wikia.videoBootstrap', ['wikia.loader', 'wikia.nirvana', 'wikia.log'], 
 					autoplay: fileAutoPlay ? 1 : 0 // backend needs an integer
 				}
 			).done( function( data ) {
-				new vb( element, data.embedCode, fileClickSource );
+				new VideoBootstrap( element, data.embedCode, fileClickSource );
 			});
 		},
 		track: function( action ) {
-			log( 'tracking ' + action, 3, 'VideoBootstrap' );
-			window.Wikia.Tracker.track({
+			log('tracking ' + action, 3, 'VideoBootstrap');
+			tracker.track({
 				action: action,
 				category: 'video-player-stats',
 				label: this.provider,
@@ -147,5 +148,5 @@ define( 'wikia.videoBootstrap', ['wikia.loader', 'wikia.nirvana', 'wikia.log'], 
 		}
 	}
 
-	return vb;
+	return VideoBootstrap;
 });
