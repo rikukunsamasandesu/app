@@ -23,11 +23,7 @@ foreach ($videoList as $video):
 			</div>
 		</div>
 		<div class="video-wrapper">
-			<a href="<?= $video['fileUrl'] ?>" class="image video no-lightbox">
-				<?= $video['videoPlayButton'] ?>
-				<img alt="<?= $video['fileTitle'] ?>" src="<?= $video['thumbUrl'] ?>" width="<?= $thumbWidth ?>" height="<?= $thumbHeight ?>" data-video-name="<?= htmlspecialchars($video['fileTitle']) ?>" data-video-key="<?= htmlspecialchars(urlencode($video['title'])) ?>" class="Wikia-video-thumb thumbimage">
-				<?= $video['videoOverlay'] ?>
-			</a>
+			<?= $app->renderView( 'LicensedVideoSwapSpecialController', 'largeThumb', array( 'video' => $video, 'thumbWidth' => $thumbWidth, 'thumbHeight' => $thumbHeight ) ) ?>
 		</div>
 		<button class="keep-button secondary" data-video-keep="<?= htmlspecialchars($video['title']) ?>"><?= wfMessage('lvs-button-keep')->plain() ?></button>
 	</div>

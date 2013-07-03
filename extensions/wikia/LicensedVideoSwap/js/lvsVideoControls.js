@@ -2,10 +2,11 @@
  * Handle clicks on play buttons so they play the video
  */
 
-define( 'lvs.videocontrols', [ 'wikia.videoBootstrap', 'wikia.nirvana', 'jquery', 'lvs.tracker' ], function( VideoBootstrap, nirvana, $, tracker ) {
+define( 'lvs.videocontrols', [ 'wikia.videoBootstrap', 'wikia.nirvana', 'jquery', 'lvs.tracker', 'wikia.loader', 'wikia.log' ], function( VideoBootstrap, nirvana, $, tracker, loader, log ) {
 	"use strict";
 
-	var videoInstances = [];
+	var videoInstances = [],
+		thumbTemplate = false;
 
 	function setVerticalAlign( $element, video ) {
 		// TODO: once height is set dynamically, let this function run.
@@ -109,6 +110,21 @@ define( 'lvs.videocontrols', [ 'wikia.videoBootstrap', 'wikia.nirvana', 'jquery'
 		});
 	}
 
+	function loadThumbTemplate() {
+		if ( thumbTemplate ) {
+			return;
+		}
+		// TODO: load mustache lib and largeThumb template.
+		/*loader.load(
+			type: loader.MULTI,
+			mustache: 'extensions/wikia/LicensedVideoSwap/templates/LicensedVideoSwapSpecialController_largeThumb.mustache'
+		)*/
+	}
+
+	function resetToThumb() {
+		log('reset to thumb here', 'info', 'lvs')
+	}
+
 	function reset() {
 		var i,
 			len = videoInstances.length,
@@ -119,7 +135,7 @@ define( 'lvs.videocontrols', [ 'wikia.videoBootstrap', 'wikia.nirvana', 'jquery'
 
 			// revert to original html
 			removeVerticalAlign( $( vb.element ) );
-			vb.resetToThumb();
+			resetToThumb();
 
 		}
 	}
