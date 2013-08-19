@@ -2,7 +2,7 @@
  * AJAX interrupter for Licensed Video Swap undo workflow
  * @author Kenneth Kouot <kenneth@wikia-inc.com>
  */
-require([
+define( 'lvs.history', [
 	'jquery',
 	'lvs.commonajax'
 ], function($, commonAjax) {
@@ -15,7 +15,6 @@ require([
 			that.$el = $(opts.el);
 			that.init();
 		});
-
 	}
 
 	LVSHistoryPage.prototype = {
@@ -61,7 +60,5 @@ require([
 		constructor: LVSHistoryPage
 	};
 
-	return new LVSHistoryPage({
-		el: '.lvs-undo-list'
-	});
+	return LVSHistoryPage;
 });

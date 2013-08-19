@@ -87,7 +87,10 @@ files = [
 	//Search
 	'extensions/wikia/Search/js/SearchAbTest.js',
 	'extensions/wikia/Search/js/SearchAbTest.*.js',
-	'extensions/wikia/Search/js/spec/*.spec.js'
+	'extensions/wikia/Search/js/spec/*.spec.js',
+
+	//LicensedVideoSwap
+	'extensions/wikia/LicensedVideoSwap/js/spec/*.spec.js'
 ];
 
 notCovered = [

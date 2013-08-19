@@ -7,13 +7,15 @@ require( [
 	'lvs.undo',
 	'lvs.videocontrols',
 	'lvs.suggestions',
-	'lvs.tracker'
-], function( $, callout, commonAjax, ellipses, swapKeep, undo, videoControls, suggestions, tracker ) {
+	'lvs.tracker',
+	'lvs.history'
+], function( $, callout, commonAjax, ellipses, swapKeep, undo, videoControls, suggestions, tracker, History ) {
 
 	"use strict";
 
 	$(function() {
-		var $container = $( '#LVSGrid' );
+		var historyPage,
+			$container = $( '#LVSGrid' );
 
 		// track impression
 		tracker.track({
@@ -27,5 +29,8 @@ require( [
 		undo.init( $container );
 		videoControls.init( $container );
 		suggestions.init( $container );
+		historyPage = new History({
+			el: '.lvs-undo-list'
+		});
 	});
 });
