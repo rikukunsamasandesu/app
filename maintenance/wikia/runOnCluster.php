@@ -148,7 +148,7 @@ class RunOnCluster extends Maintenance {
 		foreach ( $clusterWikis as $dbname ) {
 			// Catch connection errors and log them
 			try {
-				$result = $this->db->query("use $dbname");
+				$result = $this->db->query("use `$dbname`");
 			} catch ( Exception $e ) {
 				fwrite(STDERR, "ERROR: ".$e->getMessage()."\n");
 			}
@@ -182,6 +182,7 @@ class RunOnCluster extends Maintenance {
 		$sql = 'SELECT city_dbname
 		 		FROM city_list
 		 		WHERE city_cluster = "c'.$this->cluster.'"
+		 		  AND city_public = 1
 		 		ORDER BY city_dbname';
 		$result = $db->query($sql);
 
