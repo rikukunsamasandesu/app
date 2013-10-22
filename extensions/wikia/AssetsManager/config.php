@@ -1004,10 +1004,17 @@ $config['videopageadmin_js'] = array(
 		'//extensions/wikia/VideoPageTool/js/views/videopageadmin.thumbnailupload.js',
 		'//extensions/wikia/VideoPageTool/js/views/videopageadmin.edit.js',
 
+		// load backbone models
 		'//extensions/wikia/VideoPageTool/js/models/videopageadmin.category.js',
+
+		// load backbone collections
 		'//extensions/wikia/VideoPageTool/js/collections/videopageadmin.category.js',
+		'//extensions/wikia/VideoPageTool/js/collections/videopageadmin.carousel.js',
+
+		// load views
 		'//extensions/wikia/VideoPageTool/js/views/videopageadmin.autocompleteitem.js',
 		'//extensions/wikia/VideoPageTool/js/views/videopageadmin.autocomplete.js',
+		'//extensions/wikia/VideoPageTool/js/views/videopageadmin.carousel.js',
 		'//extensions/wikia/VideoPageTool/js/views/videopageadmin.categoryforms.js',
 		'//extensions/wikia/VideoPageTool/js/views/videopageadmin.category.js',
 	)

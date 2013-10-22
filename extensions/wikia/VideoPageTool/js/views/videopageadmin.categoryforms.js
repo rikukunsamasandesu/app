@@ -1,8 +1,10 @@
 define( 'views.videopageadmin.categoryforms', [
 		'jquery',
 		'views.videopageadmin.autocomplete',
-		'collections.videopageadmin.category'
-	], function( $, AutocompleteView, CategoryCollection ) {
+		'collections.videopageadmin.category',
+		'views.videopageadmin.carousel',
+		'collections.videopageadmin.carousel'
+	], function( $, AutocompleteView, CategoryCollection, CarouselView, CarouselCollection ) {
 		'use strict';
 
 		var FormGroupView = Backbone.View.extend({
@@ -11,7 +13,11 @@ define( 'views.videopageadmin.categoryforms', [
 							el: this.el,
 							collection: new CategoryCollection()
 					});
-				},
+
+					this.carousel = new CarouselView({
+							collection: new CarouselCollection()
+					});
+				}
 		});
 
 		return FormGroupView;

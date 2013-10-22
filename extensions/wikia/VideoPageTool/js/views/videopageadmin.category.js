@@ -22,9 +22,15 @@ define( 'views.videopageadmin.category', [
 
 $(function () {
 		'use strict';
-		require([ 'views.videopageadmin.category' ], function( CategoryPageView ) {
-				new CategoryPageView({
-						el: '#LatestVideos'
-				});
+		require([ 'wikia.querystring' ], function( queryString ) {
+				if ( queryString( window.location ).cache.section === 'category' ) {
+
+					require([ 'views.videopageadmin.category' ], function( CategoryPageView ) {
+						new CategoryPageView({
+								el: '#LatestVideos'
+						});
+					});
+
+				}
 		});
 });
