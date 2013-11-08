@@ -553,9 +553,9 @@ function wfCategoryPageWithAds(&$cat){
 
 	if ( NS_CATEGORY == $cat->mTitle->getNamespace() ) {
 		global $wgOut, $wgRequest;
-		$from = $wgRequest->getVal( 'from' );
-		$until = $wgRequest->getVal( 'until' );
-		$viewer = new CategoryWithAds( $cat->mTitle, $from, $until);
+		$oldFrom = $wgRequest->getVal( 'from' );
+		$oldUntil = $wgRequest->getVal( 'until' );
+		$viewer = new CategoryWithAds( $cat->mTitle, $oldFrom, $oldUntil );
 		$wgOut->addHTML( $viewer->getHTML() );
 	}
 
@@ -564,19 +564,41 @@ function wfCategoryPageWithAds(&$cat){
 
 class CategoryWithAds extends CategoryViewer{
 
-	function __construct( $title, $from = '', $until = '', $query = array() ) {
-		parent::__construct( $title, RequestContext::getMain(), array( $from ), array( $until ), $query );
-		$this->from = $from;
-		$this->until = $until;
+	function __construct( $title, $oldFrom = '', $oldUntil = '', $query = array() ) {
+		global $wgRequest;
+
+		// Backwards compat fixes copied from CategoryPage.php closeShowCategory()
+		$reqArray = $wgRequest->getValues();
+		$from = $until = array();
+		foreach ( array( 'page', 'subcat', 'file' ) as $type ) {
+			$from[$type] = $wgRequest->getVal( "{$type}from", $oldFrom );
+			$until[$type] = $wgRequest->getVal( "{$type}until", $oldUntil );
+
+			// Do not want old-style from/until propagating in nav links.
+			if ( !isset( $reqArray["{$type}from"] ) && isset( $reqArray["from"] ) ) {
+				$reqArray["{$type}from"] = $reqArray["from"];
+			}
+			if ( !isset( $reqArray["{$type}to"] ) && isset( $reqArray["to"] ) ) {
+				$reqArray["{$type}to"] = $reqArray["to"];
+			}
+		}
+
+		unset( $reqArray["from"] );
+		unset( $reqArray["to"] );
+
+		parent::__construct( $title, RequestContext::getMain(), $from, $until, $query );
+
+		$this->oldFrom = $oldFrom;
+		$this->oldUntil = $oldUntil;
 	}
 
 	function doCategoryQuery() {
 		$dbr = wfGetDB( DB_SLAVE, 'vslow' );
-		if( $this->from != '' ) {
-			$pageCondition = 'cl_sortkey >= ' . $dbr->addQuotes( $this->from );
+		if( $this->oldFrom != '' ) {
+			$pageCondition = 'cl_sortkey >= ' . $dbr->addQuotes( $this->oldFrom );
 			$this->flip = false;
-		} elseif( $this->until != '' ) {
-			$pageCondition = 'cl_sortkey < ' . $dbr->addQuotes( $this->until );
+		} elseif( $this->oldUntil != '' ) {
+			$pageCondition = 'cl_sortkey < ' . $dbr->addQuotes( $this->oldUntil );
 			$this->flip = true;
 		} else {
 			$pageCondition = '1 = 1';
