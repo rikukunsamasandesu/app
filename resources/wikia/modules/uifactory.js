@@ -94,6 +94,70 @@ define('wikia.ui.factory', [
 
 	}
 
+	function collectComponents (node, componentList) {
+		$.each(node, function( name, value) {
+			if (name === 'component') {
+				componentList.push(value);
+			}
+			if (typeof value === 'object') {
+				collectComponents(value, componentList);
+			}
+		});
+	}
+
+	function recursiveRender(node, subComponents) {
+		var result = '',
+			tempVal = '';
+//		// first add defaults
+//		if (typeof node.params !== "undefined" && typeof node.params.component !== "undefined") {
+//			node.params.vars = $.extend(
+//				true,
+//				{},
+//				defaults[getKey(node.params.component, node.params.type || '')],
+//				node.params.vars
+//			);
+//		}
+		$.each(node, function( name, value ) {
+			if ( typeof value === 'object' ) {
+				tempVal = recursiveRender( value, subComponents);
+				if (tempVal !== '') {
+					node[name] = tempVal;
+				}
+			}
+		});
+		// render children
+		if (typeof node.params !== 'undefined' && typeof node.params.component !== 'undefined') {
+			result = subComponents[ node.params.component ].render( node.params );
+		}
+		return result;
+	}
+
+	function compile( params ) {
+		var deferred = new $.Deferred(),
+			componentList = [],
+			subComponents = {},
+			result = '',
+			args;
+
+		collectComponents( params, componentList );
+		if ( componentList.length > 0 ) {
+			init( arrayUnique( componentList ) ).then(function () {
+				args = arguments;
+				if ( componentList.length !== arguments.length ) {
+					throw new Error( 'Not all sub components are loaded' );
+				}
+				componentList.forEach(function( element, index) {
+					subComponents[ element ] = args[ index ];
+				});
+				recursiveRender( params, subComponents );
+				deferred.resolve( params );
+			});
+		} else {
+			deferred.resolve( params );
+		}
+		return deferred;
+	}
+
 	/**
 	* Factory method for initialising components
 	* (load assets dependencies and adds them to DOM + instantiates UI components and applies config to them)
@@ -193,7 +257,8 @@ define('wikia.ui.factory', [
 
 	//Public API
 	return {
-		init: init
+		init: init,
+		compile: compile
 	}
 
 });

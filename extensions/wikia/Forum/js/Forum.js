@@ -31,8 +31,7 @@
 					} );
 				}
 
-
-				policiesModal = uiModal.render( {
+				policiesModal = uiFactory.compile({
 					type: 'default',
 					vars: {
 						id: modalId,
@@ -41,34 +40,88 @@
 						title: $.msg( 'forum-specialpage-policies' ),
 						closeButton: true,
 						closeText: $.msg( 'close' ),
-						primaryBtn: editBtn,
+						primaryBtn: {
+							"params": {
+								"component": "button",
+								"type": "link",
+								"vars": {
+									"href": "#",
+									"classes": [
+										"primary",
+										"big"
+									],
+									"title": "Primary big button example",
+									"value": "Primary big button"
+								}
+							}
+						},
 						secondBtn: backBtn
 					}
-				} );
+				}).then(function( config ) {
+					policiesModal = uiModal.render( config );
 
-				policiesModal = uiModal.init( modalId, policiesModal );
-				policiesModal.$element.find( '#close' ).click( function() {
-					policiesModal.close();
-				} );
-				policiesModal.$element.find( '#edit' ).click( function() {
-					window.location = window.wgPoliciesEditURL;
-				} );
+					policiesModal = uiModal.init( modalId, policiesModal );
+					policiesModal.$element.find( '#close' ).click( function() {
+						policiesModal.close();
+					} );
+					policiesModal.$element.find( '#edit' ).click( function() {
+						window.location = window.wgPoliciesEditURL;
+					} );
 
-				policiesModal.show();
-				policiesModal.$element.find( '.ForumPolicies' ).startThrobbing();
-				$.nirvana.sendRequest({
-					controller: 'ForumExternalController',
-					type: 'GET',
-					method: 'policies',
-					format: 'json',
-					data: {
-						'rev': window.wgPoliciesRev
-					},
-					callback: function(data) {
-						policiesModal.$element.find( '.ForumPolicies' ).stopThrobbing();
-						policiesModal.$element.find( '.ForumPolicies .WikiaArticle' ).html(data.body);
-					}
+					policiesModal.show();
+					policiesModal.$element.find( '.ForumPolicies' ).startThrobbing();
+					$.nirvana.sendRequest({
+						controller: 'ForumExternalController',
+						type: 'GET',
+						method: 'policies',
+						format: 'json',
+						data: {
+							'rev': window.wgPoliciesRev
+						},
+						callback: function(data) {
+							policiesModal.$element.find( '.ForumPolicies' ).stopThrobbing();
+							policiesModal.$element.find( '.ForumPolicies .WikiaArticle' ).html(data.body);
+						}
+					});
 				});
+
+//				policiesModal = uiModal.render( {
+//					type: 'default',
+//					vars: {
+//						id: modalId,
+//						size: 'medium',
+//						content: '<div class="ForumPolicies"><div class="WikiaArticle"></div></div>',
+//						title: $.msg( 'forum-specialpage-policies' ),
+//						closeButton: true,
+//						closeText: $.msg( 'close' ),
+//						primaryBtn: editBtn,
+//						secondBtn: backBtn
+//					}
+//				} );
+
+//				policiesModal = uiModal.init( modalId, policiesModal );
+//				policiesModal.$element.find( '#close' ).click( function() {
+//					policiesModal.close();
+//				} );
+//				policiesModal.$element.find( '#edit' ).click( function() {
+//					window.location = window.wgPoliciesEditURL;
+//				} );
+//
+//				policiesModal.show();
+//				policiesModal.$element.find( '.ForumPolicies' ).startThrobbing();
+//				$.nirvana.sendRequest({
+//					controller: 'ForumExternalController',
+//					type: 'GET',
+//					method: 'policies',
+//					format: 'json',
+//					data: {
+//						'rev': window.wgPoliciesRev
+//					},
+//					callback: function(data) {
+//						policiesModal.$element.find( '.ForumPolicies' ).stopThrobbing();
+//						policiesModal.$element.find( '.ForumPolicies .WikiaArticle' ).html(data.body);
+//					}
+//				});
 			} );
 		} );
 		return false;
