@@ -53,6 +53,10 @@ class UIFactoryApiController extends \WikiaApiController {
 		foreach( $components as $component ) {
 			$componentResult = [];
 
+			$autoLoad = $component->getAutoLoad();
+			if ( !empty( $autoLoad) ) {
+				$componentResult[ 'autoload' ] = $autoLoad;
+			}
 			$componentResult[ 'templateVarsConfig' ] = $component->getTemplateVarsConfig();
 			$componentResult[ 'templates' ] = [];
 			foreach( array_keys( $componentResult[ 'templateVarsConfig' ] ) as $type ) {

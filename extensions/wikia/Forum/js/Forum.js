@@ -46,32 +46,29 @@
 					}
 				} );
 
-				require( [ 'wikia.ui.modal' ], function( modal ) {
-					policiesModal = modal.init( modalId, policiesModal );
-					policiesModal.$element.find( '#close' ).click( function() {
-						policiesModal.close();
-					} );
-					policiesModal.$element.find( '#edit' ).click( function() {
-						window.location = window.wgPoliciesEditURL;
-					} );
-
-
-					policiesModal.show();
-					policiesModal.$element.find( '.ForumPolicies' ).startThrobbing();
-					$.nirvana.sendRequest({
-						controller: 'ForumExternalController',
-						type: 'GET',
-						method: 'policies',
-						format: 'json',
-						data: {
-							'rev': window.wgPoliciesRev
-						},
-						callback: function(data) {
-							policiesModal.$element.find( '.ForumPolicies' ).stopThrobbing();
-							policiesModal.$element.find( '.ForumPolicies .WikiaArticle' ).html(data.body);
-						}
-					});
+				policiesModal = uiModal.init( modalId, policiesModal );
+				policiesModal.$element.find( '#close' ).click( function() {
+					policiesModal.close();
 				} );
+				policiesModal.$element.find( '#edit' ).click( function() {
+					window.location = window.wgPoliciesEditURL;
+				} );
+
+				policiesModal.show();
+				policiesModal.$element.find( '.ForumPolicies' ).startThrobbing();
+				$.nirvana.sendRequest({
+					controller: 'ForumExternalController',
+					type: 'GET',
+					method: 'policies',
+					format: 'json',
+					data: {
+						'rev': window.wgPoliciesRev
+					},
+					callback: function(data) {
+						policiesModal.$element.find( '.ForumPolicies' ).stopThrobbing();
+						policiesModal.$element.find( '.ForumPolicies .WikiaArticle' ).html(data.body);
+					}
+				});
 			} );
 		} );
 		return false;

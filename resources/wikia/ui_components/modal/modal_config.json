@@ -1,4 +1,5 @@
 {
+	"autoload": "wikia.ui.modal",
 	"templateVars": {
 		"default": {
 			"required": [ "id", "size", "content" ],

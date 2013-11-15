@@ -321,6 +321,9 @@ class Factory {
 			if ( !empty($componentConfig['templateVars']) ) {
 				$component->setTemplateVarsConfig( $componentConfig['templateVars'] );
 			}
+			if ( !empty($componentConfig['autoload']) ) {
+				$component->setAutoLoad( $componentConfig['autoload'] );
+			}
 			$component->setBaseTemplatePath( $this->getComponentsBaseTemplatePath( $name ) );
 
 			$component->setAssets( $componentConfig['dependencies'] );

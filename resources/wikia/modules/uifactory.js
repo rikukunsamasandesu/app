@@ -106,6 +106,7 @@ define('wikia.ui.factory', [
 	function init(componentName) {
 
 		var deferred = new $.Deferred(),
+			deferredAutoload = new $.Deferred(),
 			components = [];
 
 		if (!(componentName instanceof Array)) {
@@ -115,7 +116,9 @@ define('wikia.ui.factory', [
 		getComponentsConfig(componentName).done(function(data) {
 
 			var jsAssets = [],
-				cssAssets = [];
+				cssAssets = [],
+				autoloadList = [],
+				autoloadLength;
 
 			data.components.forEach(function(element) {
 
@@ -132,7 +135,9 @@ define('wikia.ui.factory', [
 				if (templateVarsConfig && templates) {
 					component.setComponentsConfig(templates, templateVarsConfig);
 				}
-
+				if ( element.autoload || null !== null ) {
+					autoloadList.push( [ element.autoload, component ] );
+				}
 				components.push(component);
 			});
 
@@ -153,7 +158,23 @@ define('wikia.ui.factory', [
 				loader({
 					type: loader.JS,
 					resources: jsAssets
-				}).done(resolveDeferred);
+				}).done( function () {
+					autoloadLength = autoloadList.length;
+
+					if ( autoloadList.length > 0 ) {
+						autoloadList.forEach( function (element) {
+							require( [ element[0] ], function ( uiComponent ) {
+								element[1] = $.extend( element[1], uiComponent );
+								autoloadLength--;
+								if (autoloadLength === 0) {
+									resolveDeferred();
+								}
+							})
+						});
+					} else {
+						resolveDeferred();
+					}
+				});
 			} else {
 				resolveDeferred();
 			}

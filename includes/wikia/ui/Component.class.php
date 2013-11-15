@@ -52,6 +52,11 @@ class Component {
 	private $name;
 
 	/**
+	 * @var String javascript module name to load on init
+	 */
+	private $autoLoad;
+
+	/**
 	 * @var Array assets needed to render this components. This dictionary contains arrays under the
 	 * Factory::ASSET_TYPE_CSS and Factory::ASSET_TYPE_JS keys
 	 */
@@ -91,6 +96,24 @@ class Component {
 	 */
 	public function getName() {
 		return $this->name;
+	}
+
+	/**
+	 * @desc Sets the auto load module name
+	 *
+	 * @param $autoLoad name of the module
+	 */
+	public function setAutoLoad( $autoLoad ) {
+		$this->autoLoad = $autoLoad;
+	}
+
+	/**
+	 * @desc Gets auto load module name
+	 *
+	 * @return String module name
+	 */
+	public function getAutoLoad() {
+		return $this->autoLoad;
 	}
 
 	/**
