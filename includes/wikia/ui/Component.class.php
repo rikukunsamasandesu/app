@@ -27,6 +27,12 @@ class Component {
 	private $templateVarsConfig;
 
 	/**
+	 * @desc Array with default values for attributes
+	 * @var Array $templateVarsDefaults;
+	 */
+	private $templateDefaults;
+
+	/**
 	 * @var String base path to templates (a prefix for full $templatePath)
 	 */
 	private $templateBasePath;
@@ -132,6 +138,24 @@ class Component {
 	 */
 	public function getTemplateVarsConfig() {
 		return $this->templateVarsConfig;
+	}
+
+	/**
+	 * @desc Sets the default values for template's variables
+	 *
+	 * @param $templateDefaults
+	 */
+	public function setTemplateDefaults( $templateDefaults ) {
+		$this->templateDefaults = $templateDefaults;
+	}
+
+	/**
+	 * @desc Gets the default values for template's variables
+	 *
+	 * @return array
+	 */
+	public function getTemplateDefaults() {
+		return $this->templateDefaults;
 	}
 
 	/**

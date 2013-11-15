@@ -321,6 +321,9 @@ class Factory {
 			if ( !empty($componentConfig['templateVars']) ) {
 				$component->setTemplateVarsConfig( $componentConfig['templateVars'] );
 			}
+			if ( !empty($componentConfig['defaults']) ) {
+				$component->setTemplateDefaults( $componentConfig['defaults'] );
+			}
 			if ( !empty($componentConfig['autoload']) ) {
 				$component->setAutoLoad( $componentConfig['autoload'] );
 			}

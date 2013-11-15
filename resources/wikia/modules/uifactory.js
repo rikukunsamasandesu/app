@@ -125,7 +125,8 @@ define('wikia.ui.factory', [
 				var component = getComponentInstance(),
 					templateVarsConfig = element.templateVarsConfig,
 					assets = element.assets,
-					templates = element.templates;
+					templates = element.templates,
+					templateDefaults = element.defaults || {};
 
 				if (assets) {
 					jsAssets = jsAssets.concat(assets.js);
@@ -133,7 +134,7 @@ define('wikia.ui.factory', [
 				}
 
 				if (templateVarsConfig && templates) {
-					component.setComponentsConfig(templates, templateVarsConfig);
+					component.setComponentsConfig(templates, templateVarsConfig, templateDefaults);
 				}
 				if ( element.autoload || null !== null ) {
 					autoloadList.push( [ element.autoload, component ] );

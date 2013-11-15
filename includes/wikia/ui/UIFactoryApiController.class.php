@@ -63,6 +63,10 @@ class UIFactoryApiController extends \WikiaApiController {
 				$componentResult[ 'templates' ][ $type ] = $factory->loadComponentTemplateContent( $component, $type );
 			}
 			$componentResult[ 'assets' ] = $factory->getComponentAssetsUrls( $component );
+			$defaults = $component->getTemplateDefaults();
+			if ( !empty( $defaults) ) {
+				$componentResult[ 'defaults' ] = $defaults;
+			}
 			$result[] = $componentResult;
 		}
 		$this->setVal( 'components', $result );
