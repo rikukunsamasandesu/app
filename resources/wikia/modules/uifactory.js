@@ -120,7 +120,7 @@ define( 'wikia.ui.factory', [
 					componentList.push( value );
 				}
 				if ( typeof value === 'object' ) {
-					collectComponents( value, componentList );
+					collectComponents( value );
 				}
 			});
 		}
@@ -195,8 +195,8 @@ define( 'wikia.ui.factory', [
 
 			var jsAssets = [],
 				cssAssets = [],
-				autoloadList = [],
-				autoloadLength;
+				autoLoadList = [],
+				autoLoadLength;
 
 			data.components.forEach(function( element ) {
 
@@ -215,7 +215,7 @@ define( 'wikia.ui.factory', [
 					component.setComponentsConfig( templates, templateVarsConfig, templateDefaults );
 				}
 				if ( element.autoload || null !== null ) {
-					autoloadList.push( [ element.autoload, component ] );
+					autoLoadList.push( [ element.autoload, component ] );
 				}
 				components.push( component );
 			});
@@ -238,14 +238,14 @@ define( 'wikia.ui.factory', [
 					type: loader.JS,
 					resources: jsAssets
 				}).done(function () {
-					autoloadLength = autoloadList.length;
+					autoLoadLength = autoLoadList.length;
 
-					if ( autoloadList.length > 0 ) {
-						autoloadList.forEach( function ( element ) {
+					if ( autoLoadList.length > 0 ) {
+						autoLoadList.forEach( function ( element ) {
 							require( [ element[ 0 ] ], function ( uiComponent ) {
 								element[ 1 ] = $.extend( element[ 1 ], uiComponent );
-								autoloadLength--;
-								if ( autoloadLength === 0 ) {
+								autoLoadLength--;
+								if ( autoLoadLength === 0 ) {
 									resolveDeferred();
 								}
 							});
