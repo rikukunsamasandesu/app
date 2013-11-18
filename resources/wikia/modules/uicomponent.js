@@ -82,9 +82,15 @@ define( 'wikia.ui.component', [ 'wikia.mustache', 'jquery' ], function uicompone
 			componentConfig.templateDefaults = templateDefaults;
 		};
 
-		this.applyDefaults = function ( params) {
-			return $.extend(true, {}, componentConfig.templateDefaults, params );
-		}
+		/**
+		 * Applies the component defaults the provided component definition
+		 *
+		 * @param {{}} params Component definition
+		 * @returns {{}} Component definition extended with defaults
+		 */
+		this.applyDefaults = function ( params ) {
+			return $.extend( true, {}, componentConfig.templateDefaults, params );
+		};
 	}
 
 	return UIComponent;

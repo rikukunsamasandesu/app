@@ -8,7 +8,7 @@
  *
  */
 
-define('wikia.ui.factory', [
+define( 'wikia.ui.factory', [
 	'wikia.nirvana',
 	'wikia.window',
 	'wikia.loader',
@@ -32,28 +32,27 @@ define('wikia.ui.factory', [
 	 * @return {{}} promise with components configs
 	 */
 
-	function getComponentsConfig(components) {
+	function getComponentsConfig( components ) {
 
 		var deferred = new $.Deferred(),
 			data = {
 				components: components,
 				cb: window.wgStyleVersion
-		};
+			};
 
 		nirvana.getJson(
 			'Wikia\\UI\\UIFactoryApi',
 			'getComponentsConfig',
 			data,
-			function(data) {
-					deferred.resolve(data);
+			function( data ) {
+					deferred.resolve( data );
 			},
-			function(xhrObject) {
-				deferred.reject(JSON.parse(xhrObject.responseText));
+			function( xhrObject ) {
+				deferred.reject( JSON.parse( xhrObject.responseText ) );
 			}
 		);
 
 		return deferred.promise();
-
 	}
 
 	/**
@@ -63,7 +62,7 @@ define('wikia.ui.factory', [
 	 */
 
 	function getComponentInstance() {
-		return new UIComponent;
+		return new UIComponent();
 	}
 
 	/**
@@ -77,85 +76,101 @@ define('wikia.ui.factory', [
 
 	// TODO: use jQuery helper methods for this or move this method to separate shared utility lib - waiting for decision about using jQuery in mobile skin
 
-	function arrayUnique(array) {
+	function arrayUnique( array ) {
 
 		var o = {},
-			uniqueArray = [];
+			uniqueArray = [],
+			i;
 
-		for (var i = 0; i < array.length; i++) {
-			if (o.hasOwnProperty(array[i])) {
+		for ( i = 0; i < array.length; i++ ) {
+			if ( o.hasOwnProperty( array[ i ] ) ) {
 				continue;
 			}
-			uniqueArray.push(array[i]);
-			o[array[i]] = 1;
+			uniqueArray.push( array[ i ] );
+			o[ array[ i ] ] = 1;
 		}
 
 		return uniqueArray;
 
 	}
 
-	function collectComponents (node, componentList) {
-		$.each(node, function( name, value) {
-			if (name === 'component') {
-				componentList.push(value);
-			}
-			if (typeof value === 'object') {
-				collectComponents(value, componentList);
-			}
-		});
-	}
-
-	function recursiveRender(node, subComponents) {
-		var result = '',
-			tempVal = '';
-//		// first add defaults
-//		if (typeof node.params !== "undefined" && typeof node.params.component !== "undefined") {
-//			node.params.vars = $.extend(
-//				true,
-//				{},
-//				defaults[getKey(node.params.component, node.params.type || '')],
-//				node.params.vars
-//			);
-//		}
-		$.each(node, function( name, value ) {
-			if ( typeof value === 'object' ) {
-				tempVal = recursiveRender( value, subComponents);
-				if (tempVal !== '') {
-					node[name] = tempVal;
-				}
-			}
-		});
-		// render children
-		if (typeof node.params !== 'undefined' && typeof node.params.component !== 'undefined') {
-			result = subComponents[ node.params.component ].render( node.params );
-		}
-		return result;
-	}
-
+	/**
+	 * Compiles component definition containing sub components
+	 *
+	 * @param {{}} params Component definition
+	 *
+	 * @returns {Deferred} Promise with compiled component definition
+	 *
+	 */
 	function compile( params ) {
 		var deferred = new $.Deferred(),
 			componentList = [],
 			subComponents = {},
-			result = '',
 			args;
 
-		collectComponents( params, componentList );
+		/**
+		 * Collects sub elements from compound component definition
+		 *
+		 * @param {{}} node Definition node to process
+		 *
+		 */
+		function collectComponents( node) {
+			$.each( node, function( name, value ) {
+				if ( name === 'component' ) {
+					componentList.push( value );
+				}
+				if ( typeof value === 'object' ) {
+					collectComponents( value, componentList );
+				}
+			});
+		}
+
+		collectComponents( params );
+		componentList = arrayUnique( componentList );
+
 		if ( componentList.length > 0 ) {
-			init( arrayUnique( componentList ) ).then(function () {
+			init( componentList ).then(function () {
 				args = arguments;
 				if ( componentList.length !== arguments.length ) {
 					throw new Error( 'Not all sub components are loaded' );
 				}
-				componentList.forEach(function( element, index) {
+				componentList.forEach(function( element, index ) {
 					subComponents[ element ] = args[ index ];
 				});
-				recursiveRender( params, subComponents );
+
+				/**
+				 * Compiles the component definition recursively
+				 *
+				 * @param {[]} node Node to compile
+				 *
+				 * @returns {string} rendered sub component
+				 *
+				 */
+				function recursiveCompile( node ) {
+					var compileResult = '';
+					$.each( node, function( name, value ) {
+						if ( typeof value === 'object' ) {
+							compileResult = recursiveCompile( value );
+							if ( compileResult !== '' ) {
+								node[ name ] = compileResult;
+							}
+						}
+					});
+					compileResult = '';
+					// compile children
+					if ( typeof node.component !== 'undefined' ) {
+						compileResult = subComponents[ node.component ].render( node );
+					}
+					return compileResult;
+				}
+
+				recursiveCompile( params );
 				deferred.resolve( params );
 			});
 		} else {
 			deferred.resolve( params );
 		}
-		return deferred;
+		return deferred.promise();
 	}
 
 	/**
@@ -167,24 +182,23 @@ define('wikia.ui.factory', [
 	* @return {{}} promise with UI components
 	*/
 
-	function init(componentName) {
+	function init( componentName ) {
 
 		var deferred = new $.Deferred(),
-			deferredAutoload = new $.Deferred(),
 			components = [];
 
-		if (!(componentName instanceof Array)) {
+		if ( !( componentName instanceof Array ) ) {
 			componentName = [ componentName ];
 		}
 
-		getComponentsConfig(componentName).done(function(data) {
+		getComponentsConfig( componentName ).done(function( data ) {
 
 			var jsAssets = [],
 				cssAssets = [],
 				autoloadList = [],
 				autoloadLength;
 
-			data.components.forEach(function(element) {
+			data.components.forEach(function( element ) {
 
 				var component = getComponentInstance(),
 					templateVarsConfig = element.templateVarsConfig,
@@ -192,22 +206,22 @@ define('wikia.ui.factory', [
 					templates = element.templates,
 					templateDefaults = element.defaults || {};
 
-				if (assets) {
-					jsAssets = jsAssets.concat(assets.js);
-					cssAssets = cssAssets.concat(assets.css);
+				if ( assets ) {
+					jsAssets = jsAssets.concat( assets.js );
+					cssAssets = cssAssets.concat( assets.css );
 				}
 
-				if (templateVarsConfig && templates) {
-					component.setComponentsConfig(templates, templateVarsConfig, templateDefaults);
+				if ( templateVarsConfig && templates ) {
+					component.setComponentsConfig( templates, templateVarsConfig, templateDefaults );
 				}
 				if ( element.autoload || null !== null ) {
 					autoloadList.push( [ element.autoload, component ] );
 				}
-				components.push(component);
+				components.push( component );
 			});
 
-			jsAssets = arrayUnique(jsAssets);
-			cssAssets = arrayUnique(cssAssets);
+			jsAssets = arrayUnique( jsAssets );
+			cssAssets = arrayUnique( cssAssets );
 
 			// TODO: temporary solution - to limit number of requests all assets will be fetched as strings in a single request while calling getComponentsConfig
 			loader({
@@ -216,25 +230,25 @@ define('wikia.ui.factory', [
 			});
 
 			function resolveDeferred() {
-				deferred.resolve.apply(null, components);
+				deferred.resolve.apply( null, components );
 			}
 
-			if (jsAssets.length > 0) {
+			if ( jsAssets.length > 0 ) {
 				loader({
 					type: loader.JS,
 					resources: jsAssets
-				}).done( function () {
+				}).done(function () {
 					autoloadLength = autoloadList.length;
 
 					if ( autoloadList.length > 0 ) {
-						autoloadList.forEach( function (element) {
-							require( [ element[0] ], function ( uiComponent ) {
-								element[1] = $.extend( element[1], uiComponent );
+						autoloadList.forEach( function ( element ) {
+							require( [ element[ 0 ] ], function ( uiComponent ) {
+								element[ 1 ] = $.extend( element[ 1 ], uiComponent );
 								autoloadLength--;
-								if (autoloadLength === 0) {
+								if ( autoloadLength === 0 ) {
 									resolveDeferred();
 								}
-							})
+							});
 						});
 					} else {
 						resolveDeferred();
@@ -244,9 +258,9 @@ define('wikia.ui.factory', [
 				resolveDeferred();
 			}
 
-		}).fail(function(data) {
-			if (data.error) {
-				throw new Error(data.error + ': ' + data.message);
+		}).fail(function( data ) {
+			if ( data.error ) {
+				throw new Error( data.error + ': ' + data.message );
 			}
 			deferred.reject();
 		});
@@ -259,6 +273,6 @@ define('wikia.ui.factory', [
 	return {
 		init: init,
 		compile: compile
-	}
+	};
 
 });
