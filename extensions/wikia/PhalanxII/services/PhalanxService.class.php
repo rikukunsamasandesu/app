@@ -17,6 +17,7 @@ class PhalanxService extends Service {
 	/**
 	 * @param $name
 	 * @param $args
+	 * @throws WikiaException
 	 * @return null|PhalanxService
 	 */
 	public function __call($name, $args) {
@@ -50,9 +51,10 @@ class PhalanxService extends Service {
 	/**
 	 * service for check function
 	 *
-	 * @param string $type     one of: content, summary, title, user, question_title, recent_questions, wiki_creation, cookie, email
-	 * @param string $content  text to be checked
-	 * @param string $lang     language code (eg. en, de, ru, pl). "en" will be assumed if this is missing
+	 * @param string $type one of: content, summary, title, user, question_title, recent_questions, wiki_creation, cookie, email
+	 * @param string $content text to be checked
+	 * @param string $lang language code (eg. en, de, ru, pl). "en" will be assumed if this is missing
+	 * @return int|mixed
 	 */
 	public function check( $type, $content, $lang = "" ) {
 		wfProfileIn( __METHOD__  );
@@ -64,9 +66,10 @@ class PhalanxService extends Service {
 	/**
 	 * service for match function
 	 *
-	 * @param string $type     one of: content, summary, title, user, question_title, recent_questions, wiki_creation, cookie, email
-	 * @param string/Array $content  text to be checked
-	 * @param string $lang     language code (eg. en, de, ru, pl). "en" will be assumed if this is missing
+	 * @param string $type one of: content, summary, title, user, question_title, recent_questions, wiki_creation, cookie, email
+	 * @param string /Array $content  text to be checked
+	 * @param string $lang language code (eg. en, de, ru, pl). "en" will be assumed if this is missing
+	 * @return int|mixed
 	 */
 	public function match( $type, $content, $lang = "" ) {
 		wfProfileIn( __METHOD__  );
@@ -85,6 +88,7 @@ class PhalanxService extends Service {
 	 *
 	 * @param array $changed -- list of rules to reload, default empty array so reload all
 	 *
+	 * @return int|mixed
 	 */
 	public function reload( $changed = array() ) {
 		wfProfileIn( __METHOD__  );
@@ -100,6 +104,7 @@ class PhalanxService extends Service {
 	 *
 	 * @param $regex String
 	 *
+	 * @return int|mixed
 	 */
 	public function validate( $regex ) {
 		wfProfileIn( __METHOD__  );

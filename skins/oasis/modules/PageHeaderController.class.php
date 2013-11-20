@@ -76,7 +76,7 @@ class PageHeaderController extends WikiaController {
 		// "Add topic"
 		else if (isset($this->content_actions['addsection'])) {
 			$action = $this->content_actions['addsection'];
-			$action['text'] = wfMsg('oasis-page-header-add-topic');
+			$action['text'] = wfMessage('oasis-page-header-add-topic');
 			$this->action = $action;
 
 			$this->actionImage = MenuButtonController::ADD_ICON;
@@ -269,7 +269,7 @@ class PageHeaderController extends WikiaController {
 					$msgKey = 'oasis-page-header-back-to-article';
 			}
 
-			$this->pageTalkSubject = Wikia::link($wgTitle->getSubjectPage(), wfMsg($msgKey), array('accesskey' => 'c'));
+			$this->pageTalkSubject = Wikia::link($wgTitle->getSubjectPage(), wfMessage($msgKey), array('accesskey' => 'c'));
 		}
 
 		// forum namespace
@@ -285,21 +285,21 @@ class PageHeaderController extends WikiaController {
 		// mainpage
 		if (WikiaPageType::isMainPage()) {
 			// change page title to just "Home"
-			$this->title = wfMsg('oasis-home');
+			$this->title = wfMessage('oasis-home');
 		}
 
 		// render page type info
 		switch($ns) {
 			case NS_MEDIAWIKI:
-				$this->pageType = wfMsg('oasis-page-header-subtitle-mediawiki');
+				$this->pageType = wfMessage('oasis-page-header-subtitle-mediawiki');
 				break;
 
 			case NS_TEMPLATE:
-				$this->pageType = wfMsg('oasis-page-header-subtitle-template');
+				$this->pageType = wfMessage('oasis-page-header-subtitle-template');
 				break;
 
 			case NS_SPECIAL:
-				$this->pageType = wfMsg('oasis-page-header-subtitle-special');
+				$this->pageType = wfMessage('oasis-page-header-subtitle-special');
 
 				// remove comments button (fix FB#3404 - Marooned)
 				$this->comments = false;
@@ -327,11 +327,11 @@ class PageHeaderController extends WikiaController {
 				break;
 
 			case NS_CATEGORY:
-				$this->pageType = wfMsg('oasis-page-header-subtitle-category');
+				$this->pageType = wfMessage('oasis-page-header-subtitle-category');
 				break;
 
 			case NS_FORUM:
-				$this->pageType = wfMsg('oasis-page-header-subtitle-forum');
+				$this->pageType = wfMessage('oasis-page-header-subtitle-forum');
 				break;
 		}
 
@@ -403,7 +403,7 @@ class PageHeaderController extends WikiaController {
 				}
 			}
 
-			$pipe = wfMsg('pipe-separator');
+			$pipe = wfMessage('pipe-separator');
 			$this->pageSubtitle = implode(" {$pipe} ", $subtitle);
 		}
 
@@ -475,11 +475,11 @@ class PageHeaderController extends WikiaController {
 		}
 
 		$this->displaytitle = true;
-		$this->title = wfMsg($titleMsg, htmlspecialchars($wgTitle->getPrefixedText()));
+		$this->title = wfMessage($titleMsg, htmlspecialchars($wgTitle->getPrefixedText()));
 
 		// back to article link
 		if (!$isPreview && !$isShowChanges) {
-			$this->subtitle = Wikia::link($wgTitle, wfMsg('oasis-page-header-back-to-article'), array('accesskey' => 'c'), array(), 'known');
+			$this->subtitle = Wikia::link($wgTitle, wfMessage('oasis-page-header-back-to-article'), array('accesskey' => 'c'), array(), 'known');
 		}
 
 		// add edit button
@@ -496,7 +496,7 @@ class PageHeaderController extends WikiaController {
 			$logPage = SpecialPage::getTitleFor( 'Log' );
 			$this->subtitle .= ' | ' . Wikia::link(
 				$logPage,
-				wfMsgHtml( 'viewpagelogs' ),
+				wfMessage( 'viewpagelogs' )->escaped(),
 				array(),
 				array( 'page' => $wgTitle->getPrefixedText() ),
 				array( 'known', 'noclasses' )
@@ -545,10 +545,10 @@ class PageHeaderController extends WikiaController {
 
 		// Editing: foo
 		$this->displaytitle = true;
-		$this->title = wfMsg($msg, htmlspecialchars($wgTitle->getPrefixedText()));
+		$this->title = wfMessage($msg, htmlspecialchars($wgTitle->getPrefixedText()));
 
 		// back to article link
-		$this->subtitle = Wikia::link($wgTitle, wfMsg('oasis-page-header-back-to-article'), array('accesskey' => 'c'), array(), 'known');
+		$this->subtitle = Wikia::link($wgTitle, wfMessage('oasis-page-header-back-to-article'), array('accesskey' => 'c'), array(), 'known');
 	}
 
 	/**

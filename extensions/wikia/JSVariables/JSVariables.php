@@ -107,12 +107,12 @@ function wfMakeGlobalVariablesScript(Array &$vars, OutputPage $out) {
 
 	// TODO: load it on-demand using JSMessages
 	if($vars['wgIsArticle'] == false && !empty($vars['wgEnableAjaxLogin'])) {
-		$vars['ajaxLogin1'] = wfMsg('ajaxLogin1');
-		$vars['ajaxLogin2'] = wfMsg('ajaxLogin2');
+		$vars['ajaxLogin1'] = wfMessage('ajaxLogin1');
+		$vars['ajaxLogin2'] = wfMessage('ajaxLogin2');
 	}
 
 	// TODO: use wgMainPageTitle instead?
-	$vars['wgMainpage'] = wfMsgForContent( 'mainpage' );
+	$vars['wgMainpage'] = wfMessage( 'mainpage' )->inContentLanguage()->text();;
 	if (Wikia::isMainPage()) {
 		$vars['wgIsMainpage'] = true;
 	}

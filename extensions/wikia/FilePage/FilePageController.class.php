@@ -31,7 +31,7 @@ class FilePageController extends WikiaController {
 			// the number of rows returned.  This is a safeguard against extreme cases
 			$this->setVal('limit', 50);
 
-			$heading = wfMsg('video-page-global-file-list-header');
+			$heading = wfMessage('video-page-global-file-list-header');
 
 			// Forward to the getGlobalUsage method
 			$summary = $app->sendRequest('FilePageController', 'getGlobalUsage')->getData()['summary'];
@@ -62,7 +62,7 @@ class FilePageController extends WikiaController {
 				}
 			}
 		} else {
-			$heading = wfMsg('video-page-file-list-header');
+			$heading = wfMessage('video-page-file-list-header');
 			$summary = $app->sendRequest('FilePageController', 'getLocalUsage')->getData()['summary'];
 
 			// Shorten the list down to three articles much like above in global, but

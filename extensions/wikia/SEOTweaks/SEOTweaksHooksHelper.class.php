@@ -82,13 +82,13 @@ class SEOTweaksHooksHelper {
 
 			if ( (new WikiaFileHelper)->isFileTypeVideo( $file ) ) {
 
-				$newTitle = wfMsg('seotweaks-video') . ' - ' . $title->getBaseText();
+				$newTitle = wfMessage('seotweaks-video') . ' - ' . $title->getBaseText();
 			} else {
 
 				// It's not Video so lets check if it is Image
 				if ( $file instanceof LocalFile && $file->getHandler() instanceof BitmapHandler ) {
 
-					$newTitle = wfMsg('seotweaks-image') . ' - ' . $title->getBaseText();
+					$newTitle = wfMessage('seotweaks-image') . ' - ' . $title->getBaseText();
 				}
 			}
 

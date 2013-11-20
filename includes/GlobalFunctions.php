@@ -1426,6 +1426,10 @@ function wfMsgForContentNoTrans( $key ) {
  * @return String: the requested message.
  */
 function wfMsgReal( $key, $args, $useDB = true, $forContent = false, $transform = true ) {
+$url = F::app()->wg->Request->getFullRequestURL();
+if ( preg_match("/File:Street_Fighter_X_Tekken_-_Plus_Cats/", $url)) {
+gtrace("wfMsgReal called (".F::app()->wg->Request->getFullRequestURL().')');
+}
 	wfProfileIn( __METHOD__ );
 	wfDeprecated( __METHOD__, '1.18' );
 	$message = wfMsgGetKey( $key, $useDB, $forContent, $transform );

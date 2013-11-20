@@ -13,7 +13,7 @@ class GlobalHeaderController extends WikiaController {
 		$messageName = 'shared-Globalnavigation';
 		if ($category) {
 			$messageNameWithCategory = $messageName . '-' . $category->cat_id;
-			if (!wfEmptyMsg($messageNameWithCategory, wfMsg($messageNameWithCategory))) {
+			if (!wfEmptyMsg($messageNameWithCategory, wfMessage($messageNameWithCategory))) {
 				$messageName = $messageNameWithCategory;
 			}
 		}

@@ -26,8 +26,8 @@ class CorporateFooterController extends WikiaController {
 
 		//i18n
 		if (!empty($catInfo)) {
-			$catInfo->cat_link = wfMsg('oasis-corporatefooter-hub-'. $catInfo->cat_name .'-link');
-			$catInfo->cat_name = wfMsg('hub-'. $catInfo->cat_name);
+			$catInfo->cat_link = wfMessage('oasis-corporatefooter-hub-'. $catInfo->cat_name .'-link');
+			$catInfo->cat_name = wfMessage('hub-'. $catInfo->cat_name);
 		}
 
 		wfProfileOut( __METHOD__ );

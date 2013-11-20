@@ -8,7 +8,7 @@ class ContributeMenuController extends WikiaController {
 		$content_actions = $this->app->getSkinTemplateObj()->data['content_actions'];
 		if (isset($content_actions['edit'])) {
 			$dropdownItems['edit'] = array(
-				'text' => wfMsg('oasis-navigation-v2-edit-page'),
+				'text' => wfMessage('oasis-navigation-v2-edit-page'),
 				'href' => $content_actions['edit']['href'],
 				// don't use MenuButton module magic to get accesskey for this item (BugId:15698)
 				'accesskey' => false,
@@ -49,7 +49,7 @@ class ContributeMenuController extends WikiaController {
 			}
 
 			$attrs = array(
-				'text' => wfMsg($link['label']),
+				'text' => wfMessage($link['label']),
 				'href' =>  $specialPageTitle->getLocalURL(),
 			);
 
@@ -69,7 +69,7 @@ class ContributeMenuController extends WikiaController {
 
 		if($wgUser->isAllowed('editinterface')) {
 			$dropdownItems['wikinavedit'] = array(
-				'text' => wfMsg('oasis-navigation-v2-edit-this-menu'),
+				'text' => wfMessage('oasis-navigation-v2-edit-this-menu'),
 				'href' => Title::newFromText(NavigationModel::WIKI_LOCAL_MESSAGE, NS_MEDIAWIKI)->getLocalURL('action=edit'),
 			);
 		}

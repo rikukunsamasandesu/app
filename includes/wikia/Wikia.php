@@ -321,14 +321,14 @@ class Wikia {
                     __METHOD__
                 );
 				if ($oRow) {
-					$text .= '<div id="wikia-credits"><br /><br /><small>' . wfMsg('tagline-url-interwiki',$oRow->iw_prefix) . '</small></div>';
+					$text .= '<div id="wikia-credits"><br /><br /><small>' . wfMessage('tagline-url-interwiki',$oRow->iw_prefix) . '</small></div>';
 				}
 				else {
-					$text .= '<div id="wikia-credits"><br /><br /><small>' . wfMsg('tagline-url') . '</small></div>';
+					$text .= '<div id="wikia-credits"><br /><br /><small>' . wfMessage('tagline-url') . '</small></div>';
 				}
 			}
             else {
-				$text .= '<div id="wikia-credits"><br /><br /><small>' . wfMsg('tagline-url') . '</small></div>';
+				$text .= '<div id="wikia-credits"><br /><br /><small>' . wfMessage('tagline-url') . '</small></div>';
 			}
 		}
 
@@ -494,7 +494,7 @@ class Wikia {
 	 * @access public
 	 * @static
 	 *
-	 * @param String $lang  -- language code
+	 * @param String $langCode -- language code
 	 *
 	 * @return User -- instance of user object
 	 */
@@ -917,7 +917,7 @@ class Wikia {
 	public static function categoryCloudMsgToArray( $key ) {
 		$data = array();
 
-		$msg = wfMsg($key);
+		$msg = wfMessage($key);
 		if (!wfEmptyMsg($msg, $key)) {
 			$data = preg_split("/[*\s,]+/", $msg, null, PREG_SPLIT_NO_EMPTY);
 		}
@@ -939,7 +939,7 @@ class Wikia {
 			// handle redirects
 			if (!$result) {
 				if(!empty($wgArticle->mRedirectedFrom)) {
-					$result = wfMsgForContent('mainpage') == $wgArticle->mRedirectedFrom->getPrefixedText();
+					$result = wfMessage('mainpage')->inContentLanguage()->text() == $wgArticle->mRedirectedFrom->getPrefixedText();
 				}
 			}
 		}
@@ -1216,7 +1216,7 @@ class Wikia {
 	static public function parseMessageToArray($msgName, $forContent = false) {
 		wfProfileIn( __METHOD__ );
 		$items = array();
-		$message = $forContent ? wfMsgForContent($msgName) : wfMsg($msgName);
+		$message = $forContent ? wfMessage($msgName)->inContentLanguage()->text() : wfMessage($msgName);
 
 		if (!wfEmptyMsg($msgName, $message)) {
 			$parsed = explode("\n", $message);
@@ -1360,13 +1360,15 @@ class Wikia {
 	 * View::normalPageLink('Somewhere', 'button-createpage', 'wikia-button');
 	 * View::normalPageLink('Somewhere', 'oasis-button-random-page', 'wikia-button secondary', 'icon_button_random.png') ?>
 	 *
- 	 * @param title Title - the Title of the page to link to
-	 * @param message String - the name of a message to use as the link text
-	 * @param class String - [optional] the name of a css class for button styling or array of HTML attributes for button
-	 * @param img String - [optional] the name of an image to pre-pend to the text (for secondary buttons)
-	 * @param alt String - [optional] the name of a message to be used as link tooltip
-	 * @param imgclass String - [optional] the name of a css class for the image (for secondary buttons)
+	 * @param Title $title - the Title of the page to link to
+	 * @param string $message
+	 * @param null|String $class
+	 * @param null|String $img
+	 * @param null|String $alt
+	 * @param null|String $imgclass
+	 * @param array|null $query
 	 * @param query array [optional] query parameters
+	 * @return string
 	 */
 	static function normalPageLink($title, $message = '', $class = null, $img = null, $alt = null, $imgclass = null, $query = null, $rel = null) {
 		global $wgStylePath, $wgBlankImgUrl;
@@ -1380,7 +1382,7 @@ class Wikia {
 		}
 
 		if ($alt != '') {
-			$classes['title'] = wfMsg($alt);
+			$classes['title'] = wfMessage($alt);
 		}
 
 		if ($alt != '') {
@@ -1388,7 +1390,7 @@ class Wikia {
 		}
 
 		if ($message != '') {
-			$message = wfMsg($message);
+			$message = wfMessage($message);
 		}
 		// Image precedes message text
 		if ($img != null) {
@@ -1431,13 +1433,15 @@ class Wikia {
 	 * View::specialPageLink('CreatePage', 'button-createpage', 'wikia-button');
 	 * View::specialPageLink('Random', 'oasis-button-random-page', 'wikia-button secondary', 'icon_button_random.png') ?>
 	 *
-	 * @param pageName String - the name of the special page to link to
-	 * @param msg String - the name of a message to use as the link text
-	 * @param class String - [optional] the name of a css class for button styling or array of HTML attributes for button
-	 * @param img String - [optional] the name of an image to pre-pend to the text (for secondary buttons)
-	 * @param alt String - [optional] the name of a message to be used as link tooltip
-	 * @param imgclass String - [optional] the name of a css class for the image (for secondary buttons)
-	 * @param rel String - [optional] the link's rel attribute
+	 * @param String $pageName
+	 * @param String $message
+	 * @param null|String $class
+	 * @param null|String $img
+	 * @param null|String $alt
+	 * @param null|String $imgclass
+	 * @param null $query
+	 * @param null|String $rel - [optional] the link's rel attribute
+	 * @return string
 	 */
 	static function specialPageLink($pageName, $message = '', $class = null, $img = null, $alt = null, $imgclass = null, $query = null, $rel = null)
 	{

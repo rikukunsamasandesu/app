@@ -4,7 +4,7 @@
 </div>
 <div
 	class="message<?if (empty($status)): ?> failsafe<? endif; ?>"
-	data-messagetooltip="<?= wfMsg('wikiabar-message-tooltip') ?>"
+	data-messagetooltip="<?= wfMessage('wikiabar-message-tooltip') ?>"
 	data-wikiabarcontent="<?= htmlentities(json_encode($barContents['messages']), ENT_QUOTES) ?>"
 ></div>
 <? foreach ($barContents['buttons'] as $idx => $button): ?>

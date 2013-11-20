@@ -78,7 +78,7 @@ class AccountNavigationController extends WikiaController {
 			$returnto = wfGetReturntoParam($returnto);
 
 			$this->personal_urls['login'] = array(
-				'text' => wfMsg('login'),
+				'text' => wfMessage('login'),
 				'href' => Skin::makeSpecialUrl('UserLogin', $returnto),
 				'class' => 'ajaxLogin',
 				'afterText' => Xml::element('img', array(
@@ -90,14 +90,14 @@ class AccountNavigationController extends WikiaController {
 			);
 
 			$this->personal_urls['register'] = array(
-				'text' => wfMsg('oasis-signup'),
+				'text' => wfMessage('oasis-signup'),
 				'href' => Skin::makeSpecialUrl('UserSignup'),
 				'class' => 'ajaxRegister'
 			);
 		}
 		else {
 			// use Mypage message for userpage entry
-			$this->personal_urls['userpage']['text'] = wfMsg('mypage');
+			$this->personal_urls['userpage']['text'] = wfMessage('mypage');
 		}
 	}
 
@@ -148,7 +148,7 @@ class AccountNavigationController extends WikiaController {
 			$helpLang = array_key_exists( $this->wg->LanguageCode, $this->wg->AvailableHelpLang ) ? $this->wg->LanguageCode : 'en';
 			$dropdownItems[] = Wikia::link(
 				Title::newFromText( wfMsgExt( 'helppage', array( 'parsemag', 'language' => $helpLang ) ) ),
-				wfMsg('help'),
+				wfMessage('help'),
 				array('title' => '', 'data-id' => 'help'),
 				'',
 				array('known')

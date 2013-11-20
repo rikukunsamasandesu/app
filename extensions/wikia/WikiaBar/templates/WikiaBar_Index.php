@@ -5,7 +5,7 @@
 			<div class="wikia-bar-seasons">
 		<? endif; ?>
 		<div class="wikia-bar<?if($wg->User->isAnon()):?> wikia-bar-anon<?endif;?>">
-			<a href="#" class="arrow" data-tooltip="<?= wfMsg('wikiabar-tooltip') ?>" data-tooltipshow="<?= wfMsg('wikiabar-tooltip-show') ?>"></a>
+			<a href="#" class="arrow" data-tooltip="<?= wfMessage('wikiabar-tooltip') ?>" data-tooltipshow="<?= wfMessage('wikiabar-tooltip-show') ?>"></a>
 			<?php
 			if ($wg->User->isAnon()) {
 				echo F::app()->renderView('WikiaBar', 'Anon',
@@ -23,6 +23,6 @@
 		<? endif; ?>
 	</div>
 	<div class="WikiaBarCollapseWrapper">
-		<a href="#" class="wikia-bar-collapse" data-tooltip="<?= wfMsg('wikiabar-tooltip') ?>"></a>
+		<a href="#" class="wikia-bar-collapse" data-tooltip="<?= wfMessage('wikiabar-tooltip') ?>"></a>
 	</div>
 <?php endif; ?>

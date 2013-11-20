@@ -1118,7 +1118,7 @@ abstract class Skin extends ContextSource {
 	 * @return String
 	 */
 	static function makeI18nUrl( $name, $urlaction = '' ) {
-		$title = Title::newFromText( wfMsgForContent( $name ) );
+		$title = Title::newFromText( wfMessage( $name )->inContentLanguage()->text() );
 		self::checkTitle( $title, $name );
 		return $title->getLocalURL( $urlaction );
 	}
@@ -1250,7 +1250,7 @@ abstract class Skin extends ContextSource {
 	 * @param $message String
 	 */
 	function addToSidebar( &$bar, $message ) {
-		$this->addToSidebarPlain( $bar, wfMsgForContentNoTrans( $message ) );
+		$this->addToSidebarPlain( $bar, wfMessage( $message )->inContentLanguage()->plain() );
 	}
 
 	/**
@@ -1532,7 +1532,7 @@ abstract class Skin extends ContextSource {
 	 *   to be included in the link, like "&section=$section"
 	 * @param $tooltip string The tooltip to use for the link: will be escaped
 	 *   and wrapped in the 'editsectionhint' message
-	 * @param $lang    string Language code
+	 * @param bool|string $lang string Language code
 	 * @return         string HTML to use for edit link
 	 */
 	public function doEditSectionLink( Title $nt, $section, $tooltip = null, $lang = false ) {
@@ -1583,6 +1583,8 @@ abstract class Skin extends ContextSource {
 	 *
 	 * @param $fname String Name of called method
 	 * @param $args Array Arguments to the method
+	 * @throws MWException
+	 * @return mixed
 	 */
 	function __call( $fname, $args ) {
 		$realFunction = array( 'Linker', $fname );

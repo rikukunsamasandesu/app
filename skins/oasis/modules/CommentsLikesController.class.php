@@ -62,7 +62,7 @@ class CommentsLikesController extends WikiaController {
 	 */
 	private function getCommentsTooltip() {
 		if ($this->comments == 0) {
-			$commentsTooltip = wfMsg('oasis-page-header-no-comments-tooltip');
+			$commentsTooltip = wfMessage('oasis-page-header-no-comments-tooltip');
 		}
 		else {
 			$commentsTooltip = '';
@@ -130,10 +130,10 @@ class CommentsLikesController extends WikiaController {
 			$this->formattedComments = $this->comments;
 
 			if ($this->comments > 999999) {
-				$this->formattedComments = wfMsg('oasis-page-header-comments-m', floor($this->comments / 1000000));
+				$this->formattedComments = wfMessage('oasis-page-header-comments-m', floor($this->comments / 1000000));
 			}
 			else if ($this->comments > 999) {
-				$this->formattedComments = wfMsg('oasis-page-header-comments-k', floor($this->comments / 1000));
+				$this->formattedComments = wfMessage('oasis-page-header-comments-k', floor($this->comments / 1000));
 			}
 
 			$this->commentsLink = $this->getCommentsLink();

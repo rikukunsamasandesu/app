@@ -36,7 +36,7 @@ function wfArticleMetaDescription(&$out, &$text) {
 	wfProfileIn( __METHOD__ );
 
 	$sMessage = null;
-	$sMainPage = wfMsgForContent('Mainpage');
+	$sMainPage = wfMessage('Mainpage')->inContentLanguage()->text();
 	if(strpos($sMainPage, ':') !== false) {
 	    $sTitle = $wgTitle->getFullText();
 	}
@@ -46,7 +46,7 @@ function wfArticleMetaDescription(&$out, &$text) {
 
 	if(strcmp($sTitle, $sMainPage) == 0) {
 		// we're on Main Page, check MediaWiki:Description message
-		$sMessage = wfMsg("Description");
+		$sMessage = wfMessage("Description");
 	}
 
 	if(($sMessage == null) || wfEmptyMsg("Description", $sMessage)) {

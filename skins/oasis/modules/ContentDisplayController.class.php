@@ -48,13 +48,13 @@ class ContentDisplayController extends WikiaController {
 		$result .= Xml::openElement( 'span', array( 'class' => $class ) );
 		$result .= Xml::openElement( 'a', array(
 			'href' => $editUrl,
-			'title' => wfMsg( 'oasis-section-edit-alt', $tooltip ),
+			'title' => wfMessage( 'oasis-section-edit-alt', $tooltip ),
 		));
 		$result .= Xml::element( 'img',	array(
 			'src' => $wgBlankImgUrl,
 			'class' => 'sprite edit-pencil',
 		));
-		$result .= wfMsg( 'oasis-section-edit' );
+		$result .= wfMessage( 'oasis-section-edit' );
 		$result .= Xml::closeElement( 'a' );
 		$result .= Xml::closeElement( 'span' );
 
